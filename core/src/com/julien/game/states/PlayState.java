@@ -1,5 +1,6 @@
 package com.julien.game.states;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.julien.game.MyGame;
@@ -12,15 +13,20 @@ import com.julien.game.sprites.Beer;
 public class PlayState extends State {
 
     private Beer beer;
+    private Texture background;
 
     public PlayState(GameStateManager gsx){
         super(gsx);
         beer = new Beer(50, 300);
         cam.setToOrtho(false, MyGame.WIDTH, MyGame.HEIGHT);
+        background = new Texture("barbg.png");
     }
 
     @Override
     protected void handleInput() {
+        if(Gdx.input.isTouched()){
+            beer.jump();
+        }
 
     }
 
@@ -35,6 +41,7 @@ public class PlayState extends State {
     protected void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
+        sb.draw(background, cam.position.x - (cam.viewportWidth/2), 0);
         sb.draw(beer.getBeerTexture(), beer.getPosition().x, beer.getPosition().y);
         sb.end();
     }
