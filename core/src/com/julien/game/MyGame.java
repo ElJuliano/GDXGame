@@ -5,8 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.julien.game.States.GameStateManager;
-import com.julien.game.States.MenuState;
+import com.julien.game.states.GameStateManager;
+import com.julien.game.states.MenuState;
 
 public class MyGame extends ApplicationAdapter {
 

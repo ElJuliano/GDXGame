@@ -1,4 +1,4 @@
-package com.julien.game.States;
+package com.julien.game.states;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,5 +24,7 @@ public abstract class State {
     protected abstract void update(float dt);
 
     protected abstract void render(SpriteBatch sb);
+
+    protected abstract void dispose();
 
 }
