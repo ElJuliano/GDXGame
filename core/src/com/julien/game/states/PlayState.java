@@ -3,6 +3,7 @@ package com.julien.game.states;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.julien.game.MyGame;
+import com.julien.game.sprites.Beer;
 
 /**
  * Created by Julien on 04/01/2017.
@@ -10,11 +11,11 @@ import com.julien.game.MyGame;
 
 public class PlayState extends State {
 
-    private Texture beer;
+    private Beer beer;
 
     public PlayState(GameStateManager gsx){
         super(gsx);
-        beer = new Texture("beer.png");
+        beer = new Beer(50, 300);
         cam.setToOrtho(false, MyGame.WIDTH, MyGame.HEIGHT);
     }
 
@@ -25,6 +26,8 @@ public class PlayState extends State {
 
     @Override
     protected void update(float dt) {
+        handleInput();
+        beer.update(dt);
 
     }
 
@@ -32,7 +35,7 @@ public class PlayState extends State {
     protected void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
-        sb.draw(beer, 50,50);
+        sb.draw(beer.getBeerTexture(), beer.getPosition().x, beer.getPosition().y);
         sb.end();
     }
 
