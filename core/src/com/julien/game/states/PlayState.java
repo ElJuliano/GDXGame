@@ -16,7 +16,6 @@ public class PlayState extends State {
     private static final int BOTTLE_SPACING = 125;
     private static final int BOTTLE_COUNT = 4;
     private Beer beer;
-    private Bottle bottle;
     private Array<Bottle> bottles;
     private Texture background;
 

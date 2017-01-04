@@ -13,8 +13,8 @@ public class Bottle {
     public final static int BOTTLE_WIDTH = 101;
 
     private static final int FLUCTUATION = 150;
-    private static final int TUBE_GAP = 100;
-    private static final int LOWEST_OPENING = 180;
+    private static final int TUBE_GAP = 150;
+    private static final int LOWEST_OPENING = 480;
     private Texture bottle_top, bottle_bottom;
     private Vector2 posBottleTop, posBottleBottom;
     private Random rand;
