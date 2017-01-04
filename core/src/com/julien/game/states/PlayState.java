@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.julien.game.MyGame;
 import com.julien.game.sprites.Beer;
+import com.julien.game.sprites.Bottle;
 
 /**
  * Created by Julien on 04/01/2017.
@@ -13,6 +14,7 @@ import com.julien.game.sprites.Beer;
 public class PlayState extends State {
 
     private Beer beer;
+    private Bottle bottle;
     private Texture background;
 
     public PlayState(GameStateManager gsx){
@@ -20,6 +22,7 @@ public class PlayState extends State {
         beer = new Beer(50, 300);
         cam.setToOrtho(false, MyGame.WIDTH, MyGame.HEIGHT);
         background = new Texture("barbg.png");
+        bottle = new Bottle(100);
     }
 
     @Override
@@ -41,8 +44,13 @@ public class PlayState extends State {
     protected void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
+        //drawing background
         sb.draw(background, cam.position.x - (cam.viewportWidth/2), 0);
+        //Drawing da beer
         sb.draw(beer.getBeerTexture(), beer.getPosition().x, beer.getPosition().y);
+        //Drawing bottles
+        sb.draw(bottle.getBottle_top(), bottle.getPosBottleTop().x, bottle.getPosBottleTop().y);
+        sb.draw(bottle.getBottle_bottom(), bottle.getPosBottleBottom().x, bottle.getPosBottleBottom().y);
         sb.end();
     }
 
