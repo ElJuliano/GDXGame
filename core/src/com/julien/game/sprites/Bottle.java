@@ -10,9 +10,11 @@ import java.util.Random;
  */
 
 public class Bottle {
-    private static final int FLUCTUATION = 130;
+    public final static int BOTTLE_WIDTH = 101;
+
+    private static final int FLUCTUATION = 150;
     private static final int TUBE_GAP = 100;
-    private static final int LOWEST_OPENING = 120;
+    private static final int LOWEST_OPENING = 180;
     private Texture bottle_top, bottle_bottom;
     private Vector2 posBottleTop, posBottleBottom;
     private Random rand;
@@ -40,5 +42,10 @@ public class Bottle {
 
     public Vector2 getPosBottleBottom() {
         return posBottleBottom;
+    }
+
+    public void reposition(float x) {
+        posBottleTop.set(x, rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
+        posBottleBottom.set(x, posBottleTop.y - TUBE_GAP - bottle_bottom.getHeight());
     }
 }
