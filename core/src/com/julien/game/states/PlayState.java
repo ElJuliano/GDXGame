@@ -26,7 +26,7 @@ public class PlayState extends State {
         background = new Texture("barbg.png");
         bottles = new Array<Bottle>();
 
-        for(int i = 0; i < BOTTLE_COUNT; i++){
+        for(int i = 1; i <= BOTTLE_COUNT; i++){
             bottles.add(new Bottle(i * (BOTTLE_SPACING + Bottle.BOTTLE_WIDTH)));
         }
     }
@@ -48,6 +48,11 @@ public class PlayState extends State {
         for(Bottle bottle : bottles){
             if(cam.position.x - (cam.viewportWidth/2) > bottle.getPosBottleTop().x + bottle.getBottle_top().getWidth()) {
                 bottle.reposition(bottle.getPosBottleTop().x + ((Bottle.BOTTLE_WIDTH + BOTTLE_SPACING) * BOTTLE_COUNT));
+            }
+
+            //Collision management
+            if(bottle.collides(beer.getBounds())) {
+                gsm.set(new PlayState(gsm));
             }
         }
 
