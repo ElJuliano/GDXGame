@@ -69,4 +69,9 @@ public class Bottle {
         return (player.overlaps(boundsBot) || player.overlaps(boundsTop));
     }
 
+    public void dispose() {
+        bottle_bottom.dispose();
+        bottle_top.dispose();
+    }
+
 }

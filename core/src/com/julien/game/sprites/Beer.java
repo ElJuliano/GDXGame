@@ -56,4 +56,8 @@ public class Beer {
     public Rectangle getBounds(){
         return beerBounds;
     }
+
+    public void dispose() {
+        beerTexture.dispose();
+    }
 }

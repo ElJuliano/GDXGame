@@ -45,7 +45,8 @@ public class PlayState extends State {
         beer.update(dt);
         cam.position.x = beer.getPosition().x + 80;
 
-        for(Bottle bottle : bottles){
+        for(int i = 0; i < bottles.size; i++){
+            Bottle bottle = bottles.get(i);
             if(cam.position.x - (cam.viewportWidth/2) > bottle.getPosBottleTop().x + bottle.getBottle_top().getWidth()) {
                 bottle.reposition(bottle.getPosBottleTop().x + ((Bottle.BOTTLE_WIDTH + BOTTLE_SPACING) * BOTTLE_COUNT));
             }
@@ -77,6 +78,12 @@ public class PlayState extends State {
 
     @Override
     protected void dispose() {
+        background.dispose();
+        beer.dispose();
+        for(Bottle bottle : bottles) {
+            bottle.dispose();
+        }
+        System.out.println("Play State disposed");
 
     }
 }
