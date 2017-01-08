@@ -1,4 +1,4 @@
-package com.julien.game.sprites;
+package com.julien.game.sprites.flappy;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -10,7 +10,7 @@ import java.util.Random;
  * Created by Julien on 04/01/2017.
  */
 
-public class Bottle {
+public class Tube {
     public final static int BOTTLE_WIDTH = 101;
 
     private static final int FLUCTUATION = 150;
@@ -23,9 +23,9 @@ public class Bottle {
     //Collision management
     private Rectangle boundsTop, boundsBot;
 
-    public Bottle(float x) {
-        bottle_top = new Texture("diplob.png");
-        bottle_bottom = new Texture("diploh.png");
+    public Tube(float x) {
+        bottle_top = new Texture("tubeTop.png");
+        bottle_bottom = new Texture("tubeBottom.png");
 
         rand = new Random();
         posBottleTop = new Vector2(x, rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);

@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.julien.game.MyGame;
-import com.julien.game.sprites.Beer;
-import com.julien.game.sprites.Bottle;
+import com.julien.game.sprites.alcoolgame.Beer;
+import com.julien.game.sprites.alcoolgame.Bottle;
+import com.julien.game.sprites.flappy.Bird;
+import com.julien.game.sprites.flappy.Tube;
 
 /**
  * Created by Julien on 04/01/2017.
@@ -15,26 +17,26 @@ import com.julien.game.sprites.Bottle;
 public class PlayState extends State {
     private static final int BOTTLE_SPACING = 125;
     private static final int BOTTLE_COUNT = 4;
-    private Beer beer;
-    private Array<Bottle> bottles;
+    private Bird bird;
+    private Array<Tube> tubes;
     private Texture background;
 
     public PlayState(GameStateManager gsx){
         super(gsx);
-        beer = new Beer(50, 500);
+        bird = new Bird(50, 500);
         cam.setToOrtho(false, MyGame.WIDTH, MyGame.HEIGHT);
-        background = new Texture("barbg.png");
-        bottles = new Array<Bottle>();
+        background = new Texture("background.png");
+        tubes = new Array<Tube>();
 
         for(int i = 1; i <= BOTTLE_COUNT; i++){
-            bottles.add(new Bottle(i * (BOTTLE_SPACING + Bottle.BOTTLE_WIDTH)));
+            tubes.add(new Tube(i * (BOTTLE_SPACING + Bottle.BOTTLE_WIDTH)));
         }
     }
 
     @Override
     protected void handleInput() {
         if(Gdx.input.isTouched()){
-            beer.jump();
+            bird.jump();
         }
 
     }
@@ -42,17 +44,17 @@ public class PlayState extends State {
     @Override
     protected void update(float dt) {
         handleInput();
-        beer.update(dt);
-        cam.position.x = beer.getPosition().x + 80;
+        bird.update(dt);
+        cam.position.x = bird.getPosition().x + 80;
 
-        for(int i = 0; i < bottles.size; i++){
-            Bottle bottle = bottles.get(i);
-            if(cam.position.x - (cam.viewportWidth/2) > bottle.getPosBottleTop().x + bottle.getBottle_top().getWidth()) {
-                bottle.reposition(bottle.getPosBottleTop().x + ((Bottle.BOTTLE_WIDTH + BOTTLE_SPACING) * BOTTLE_COUNT));
+        for(int i = 0; i < tubes.size; i++){
+            Tube tube = tubes.get(i);
+            if(cam.position.x - (cam.viewportWidth/2) > tube.getPosBottleTop().x + tube.getBottle_top().getWidth()) {
+                tube.reposition(tube.getPosBottleTop().x + ((Bottle.BOTTLE_WIDTH + BOTTLE_SPACING) * BOTTLE_COUNT));
             }
 
             //Collision management
-            if(bottle.collides(beer.getBounds())) {
+            if(tube.collides(bird.getBounds())) {
                 gsm.set(new PlayState(gsm));
             }
         }
@@ -67,11 +69,11 @@ public class PlayState extends State {
         //drawing background
         sb.draw(background, cam.position.x - (cam.viewportWidth/2), 0);
         //Drawing da beer
-        sb.draw(beer.getBeerTexture(), beer.getPosition().x, beer.getPosition().y);
+        sb.draw(bird.getBeerTexture(), bird.getPosition().x, bird.getPosition().y);
         //Drawing bottles
-        for(Bottle bottle : bottles) {
-            sb.draw(bottle.getBottle_top(), bottle.getPosBottleTop().x, bottle.getPosBottleTop().y);
-            sb.draw(bottle.getBottle_bottom(), bottle.getPosBottleBottom().x, bottle.getPosBottleBottom().y);
+        for(Tube tube : tubes) {
+            sb.draw(tube.getBottle_top(), tube.getPosBottleTop().x, tube.getPosBottleTop().y);
+            sb.draw(tube.getBottle_bottom(), tube.getPosBottleBottom().x, tube.getPosBottleBottom().y);
         }
         sb.end();
     }
@@ -79,9 +81,9 @@ public class PlayState extends State {
     @Override
     protected void dispose() {
         background.dispose();
-        beer.dispose();
-        for(Bottle bottle : bottles) {
-            bottle.dispose();
+        bird.dispose();
+        for(Tube tube : tubes) {
+            tube.dispose();
         }
         System.out.println("Play State disposed");
 
