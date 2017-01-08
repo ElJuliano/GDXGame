@@ -15,8 +15,8 @@ import com.julien.game.sprites.flappy.Tube;
  */
 
 public class PlayState extends State {
-    private static final int BOTTLE_SPACING = 125;
-    private static final int BOTTLE_COUNT = 4;
+    private static final int TUBE_SPACING = 125;
+    private static final int TUBE_COUNT = 4;
     private Bird bird;
     private Array<Tube> tubes;
     private Texture background;
@@ -28,8 +28,8 @@ public class PlayState extends State {
         background = new Texture("background.png");
         tubes = new Array<Tube>();
 
-        for(int i = 1; i <= BOTTLE_COUNT; i++){
-            tubes.add(new Tube(i * (BOTTLE_SPACING + Bottle.BOTTLE_WIDTH)));
+        for(int i = 1; i <= TUBE_COUNT; i++){
+            tubes.add(new Tube(i * (TUBE_SPACING + Tube.TUBE_WIDTH)));
         }
     }
 
@@ -50,7 +50,7 @@ public class PlayState extends State {
         for(int i = 0; i < tubes.size; i++){
             Tube tube = tubes.get(i);
             if(cam.position.x - (cam.viewportWidth/2) > tube.getPosBottleTop().x + tube.getBottle_top().getWidth()) {
-                tube.reposition(tube.getPosBottleTop().x + ((Bottle.BOTTLE_WIDTH + BOTTLE_SPACING) * BOTTLE_COUNT));
+                tube.reposition(tube.getPosBottleTop().x + ((Bottle.BOTTLE_WIDTH + TUBE_SPACING) * TUBE_COUNT));
             }
 
             //Collision management

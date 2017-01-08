@@ -11,11 +11,11 @@ import java.util.Random;
  */
 
 public class Tube {
-    public final static int BOTTLE_WIDTH = 101;
+    public final static int TUBE_WIDTH = 80;
 
     private static final int FLUCTUATION = 150;
-    private static final int TUBE_GAP = 150;
-    private static final int LOWEST_OPENING = 480;
+    private static final int TUBE_GAP = 100;
+    private static final int LOWEST_OPENING = 300;
     private Texture bottle_top, bottle_bottom;
     private Vector2 posBottleTop, posBottleBottom;
     private Random rand;
