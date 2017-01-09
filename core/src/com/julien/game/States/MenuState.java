@@ -16,7 +16,7 @@ public class MenuState extends State {
 
     public MenuState(GameStateManager currentGsm) {
         super(currentGsm);
-        background = new Texture("barbg.png");
+        background = new Texture("background.png");
         playBtn = new Texture("Button-Play-icon.png");
     }
 
@@ -24,7 +24,6 @@ public class MenuState extends State {
     public void handleInput() {
         if(Gdx.input.justTouched()){
             gsm.set(new PlayState(gsm));
-            dispose();
         }
     }
 
@@ -45,5 +44,6 @@ public class MenuState extends State {
     protected void dispose() {
         background.dispose();
         playBtn.dispose();
+        System.out.println("Menu State disposed");
     }
 }
