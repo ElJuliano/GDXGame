@@ -10,6 +10,9 @@ import com.julien.game.MyGame;
 import com.julien.game.sprites.flappy.Bird;
 import com.julien.game.sprites.flappy.Tube;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 /**
  * Created by Julien on 04/01/2017.
  */
@@ -19,12 +22,17 @@ public class PlayState extends State {
     private static final int TUBE_COUNT = 4;
     private static final int CAM_OFFSET = 80;
     private float BIRD_INIT_POS;
+    private float TUBE_POS = TUBE_SPACING + Tube.TUBE_WIDTH;
     private Bird bird;
     private Array<Tube> tubes;
     private Texture background;
     private Texture ground;
     private Vector2 groundPos1, groundPos2;
     private Rectangle ground1Bounds, ground2Bounds;
+    private float posToIncScore = TUBE_POS;
+
+    // Adding a score feature
+    private int score = 0;
 
     public PlayState(GameStateManager gsx){
         super(gsx);
@@ -42,7 +50,7 @@ public class PlayState extends State {
         tubes = new Array<Tube>();
 
         for(int i = 1; i <= TUBE_COUNT; i++){
-            tubes.add(new Tube(i * (TUBE_SPACING + Tube.TUBE_WIDTH)));
+            tubes.add(new Tube(i * (TUBE_POS)));
         }
     }
 
@@ -56,6 +64,7 @@ public class PlayState extends State {
 
     @Override
     protected void update(float dt) {
+
         handleInput();
         bird.update(dt);
         updateGroundPos();
@@ -71,12 +80,22 @@ public class PlayState extends State {
             if(tube.collides(bird.getBounds())) {
                 gsm.set(new PlayState(gsm));
             }
+
         }
         //Managing ground collision
         if(ground1Bounds.overlaps(bird.getBounds()) || ground2Bounds.overlaps(bird.getBounds())){
             gsm.set(new PlayState(gsm));
         }
 
+        //Score management
+        if(bird.getPosition().x > posToIncScore) {
+            // When the position of the bird is superior to the current tube position then we increment the
+            // tube position and the score.
+            posToIncScore += TUBE_POS;
+            score ++;
+        }
+
+        System.out.println(score);
         cam.update();
     }
 
