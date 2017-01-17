@@ -2,14 +2,17 @@ package com.julien.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.julien.game.MyGame;
 import com.julien.game.sprites.flappy.Bird;
+import com.julien.game.sprites.flappy.Score;
 import com.julien.game.sprites.flappy.Tube;
 
+import java.awt.Color;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
@@ -19,20 +22,18 @@ import java.text.DecimalFormat;
 
 public class PlayState extends State {
     private static final int TUBE_SPACING = 200;
+    public static final float TUBE_POS = TUBE_SPACING + Tube.TUBE_WIDTH;
     private static final int TUBE_COUNT = 4;
     private static final int CAM_OFFSET = 80;
     private float BIRD_INIT_POS;
-    private float TUBE_POS = TUBE_SPACING + Tube.TUBE_WIDTH;
     private Bird bird;
     private Array<Tube> tubes;
     private Texture background;
     private Texture ground;
     private Vector2 groundPos1, groundPos2;
     private Rectangle ground1Bounds, ground2Bounds;
-    private float posToIncScore = TUBE_POS;
-
-    // Adding a score feature
-    private int score = 0;
+    //Score Management
+    private Score score;
 
     public PlayState(GameStateManager gsx){
         super(gsx);
@@ -52,6 +53,8 @@ public class PlayState extends State {
         for(int i = 1; i <= TUBE_COUNT; i++){
             tubes.add(new Tube(i * (TUBE_POS)));
         }
+
+        score = new Score(cam.position.x, MyGame.HEIGHT - 150);
     }
 
     @Override
@@ -87,15 +90,7 @@ public class PlayState extends State {
             gsm.set(new PlayState(gsm));
         }
 
-        //Score management
-        if(bird.getPosition().x > posToIncScore) {
-            // When the position of the bird is superior to the current tube position then we increment the
-            // tube position and the score.
-            posToIncScore += TUBE_POS;
-            score ++;
-        }
-
-        System.out.println(score);
+        score.updateScore(bird.getPosition().x , cam.position.x);
         cam.update();
     }
 
@@ -116,6 +111,7 @@ public class PlayState extends State {
         // Drawing the ground
         sb.draw(ground, groundPos1.x, groundPos1.y);
         sb.draw(ground, groundPos2.x, groundPos2.y);
+        score.getFont().draw(sb, score.toString(), score.getFontPositionX(), score.getFontPositionY());
         sb.end();
     }
 
