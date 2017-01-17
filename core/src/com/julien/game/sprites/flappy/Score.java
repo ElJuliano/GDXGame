@@ -38,8 +38,6 @@ public class Score {
         }
         // Updating score position
         fontPositionX = newScorePositionX;
-
-        System.out.println(score);
     }
 
     public int getScore() {

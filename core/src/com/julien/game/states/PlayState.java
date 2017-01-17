@@ -2,7 +2,6 @@ package com.julien.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -11,10 +10,6 @@ import com.julien.game.MyGame;
 import com.julien.game.sprites.flappy.Bird;
 import com.julien.game.sprites.flappy.Score;
 import com.julien.game.sprites.flappy.Tube;
-
-import java.awt.Color;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 
 /**
  * Created by Julien on 04/01/2017.
@@ -101,7 +96,7 @@ public class PlayState extends State {
         //drawing background
         sb.draw(background, cam.position.x - (cam.viewportWidth/2), 0);
         //Drawing da bird
-        sb.draw(bird.getBeerTexture(), bird.getPosition().x, bird.getPosition().y);
+        sb.draw(bird.getBirdTexture(), bird.getPosition().x, bird.getPosition().y);
         //Drawing tubes
         for(Tube tube : tubes) {
             sb.draw(tube.getBottle_top(), tube.getPosBottleTop().x, tube.getPosBottleTop().y);

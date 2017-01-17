@@ -1,6 +1,7 @@
 package com.julien.game.sprites.flappy;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
@@ -15,27 +16,35 @@ public class Bird {
     private Vector3 position;
     private Vector3 velocity;
 
-    private Texture beerTexture;
+    private Texture birdTexture;
 
     //Collision management
-    private Rectangle beerBounds;
+    private Rectangle birdBounds;
+
+    //Bird animation
+    private BirdAnimation animation;
+    private Texture animationTexture;
 
     public Bird(int x, int y){
         this.position = new Vector3(x, y, 0);
         this.velocity = new Vector3(0, 0, 0);
-        this.beerTexture = new Texture("bird.png");
-        beerBounds = new Rectangle(position.x, position.y, beerTexture.getWidth(), beerTexture.getHeight());
+        this.birdTexture = new Texture("bird.png");
+        //Animation
+        animationTexture = new Texture("birdAnim.png");
+        animation = new BirdAnimation(new TextureRegion(animationTexture), 3 ,0.5f );
+        birdBounds = new Rectangle(x, y, animationTexture.getWidth()/3, animationTexture.getHeight());
     }
 
     public Vector3 getPosition() {
         return position;
     }
 
-    public Texture getBeerTexture() {
-        return beerTexture;
+    public TextureRegion getBirdTexture() {
+        return animation.getFrame();
     }
 
     public void update(float dt) {
+        animation.update(dt);
         if(position.y > 0) {
             velocity.add(0, GRAVITY, 0);
         }
@@ -46,7 +55,7 @@ public class Bird {
         }
         velocity.scl(1/dt);
         // Repositionning boundsBeer or collision management
-        beerBounds.setPosition(position.x, position.y);
+        birdBounds.setPosition(position.x, position.y);
     }
 
     public void jump(){
@@ -54,10 +63,10 @@ public class Bird {
     }
 
     public Rectangle getBounds(){
-        return beerBounds;
+        return birdBounds;
     }
 
     public void dispose() {
-        beerTexture.dispose();
+        animationTexture.dispose();
     }
 }
