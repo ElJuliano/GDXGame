@@ -11,10 +11,10 @@ import java.util.Random;
  */
 
 public class Tube {
-    public final static int TUBE_WIDTH = 80;
+    public final static int TUBE_WIDTH = 60;
 
     private static final int FLUCTUATION = 150;
-    private static final int TUBE_GAP = 100;
+    private static final int TUBE_GAP = 120;
     private static final int LOWEST_OPENING = 300;
     private Texture bottle_top, bottle_bottom;
     private Vector2 posBottleTop, posBottleBottom;
@@ -73,5 +73,9 @@ public class Tube {
         bottle_bottom.dispose();
         bottle_top.dispose();
     }
+
+    //public boolean isGreaterThan (xPosition position) {
+    //    if (this.getPosBottleTop().x + )
+    //}
 
 }
