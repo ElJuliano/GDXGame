@@ -1,6 +1,7 @@
 package com.julien.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -46,6 +47,9 @@ public class PlayState extends State {
     //GameOver
     private GameOver gameOver;
 
+    //Touch screen sound
+    private Sound touch;
+
     public PlayState(GameStateManager gsx){
         super(gsx);
         currentState = STATE.PLAY;
@@ -74,12 +78,17 @@ public class PlayState extends State {
         stage = new Stage();
         stage.clear();
         Gdx.input.setInputProcessor(stage);
+
+        //Touch screen
+        touch = Gdx.audio.newSound(Gdx.files.internal("touch.wav"));
     }
 
     @Override
     protected void handleInput() {
         if(Gdx.input.isTouched()){
             bird.jump();
+            //Playing touch sound
+            touch.play();
         }
 
     }
@@ -166,6 +175,7 @@ public class PlayState extends State {
         background.dispose();
         bird.dispose();
         ground.dispose();
+        touch.dispose();
         for(Tube tube : tubes) {
             tube.dispose();
         }

@@ -51,12 +51,12 @@ public class GameOver {
             buttonStyle.font = new BitmapFont();
             button = new TextButton(PLAY_AGAIN, buttonStyle);
             button.setScale(3, 3);
-            button.getLabel().setFontScale(2);
+            button.getLabel().setFontScale(4);
             button.setHeight(200);
             button.setWidth(300);
             button.setColor(Color.BLUE);
             button.setBounds(buttonX, buttonY, 300, 200);
-            button.setPosition(buttonX - (button.getWidth()/2), buttonY);
+            button.setPosition(buttonX , buttonY);
 
             this.gsm = stateMngr;
             prepareButton();

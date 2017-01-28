@@ -11,7 +11,7 @@ public class Score {
 
     // Adding a score feature
 
-    private float posToIncScore = PlayState.TUBE_POS;
+    private float posToIncScore = PlayState.TUBE_POS + Tube.TUBE_WIDTH;
     private int score = 0;
     private BitmapFont font;
     private float fontPositionX;
