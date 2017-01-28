@@ -1,9 +1,7 @@
 package com.julien.game.sprites.flappy;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.julien.game.MyGame;
-import com.julien.game.states.PlayState;
+        import com.badlogic.gdx.graphics.g2d.BitmapFont;
+        import com.julien.game.states.PlayState;
 
 /**
  * Created by Julien on 15/01/2017.
@@ -14,7 +12,7 @@ public class Score {
     // Adding a score feature
 
     private float posToIncScore = PlayState.TUBE_POS;
-    private int score = 99999994;
+    private int score = 0;
     private BitmapFont font;
     private float fontPositionX;
     private float fontPositionY;

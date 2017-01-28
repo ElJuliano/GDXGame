@@ -5,9 +5,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.julien.game.MyGame;
 import com.julien.game.sprites.flappy.Bird;
+import com.julien.game.sprites.flappy.GameOver;
 import com.julien.game.sprites.flappy.Score;
 import com.julien.game.sprites.flappy.Tube;
 
@@ -16,6 +20,15 @@ import com.julien.game.sprites.flappy.Tube;
  */
 
 public class PlayState extends State {
+
+    private Stage stage;
+
+    private static enum STATE {
+        PLAY,
+        PAUSE,
+        GAMEOVER
+    }
+    private STATE currentState;
     private static final int TUBE_SPACING = 200;
     public static final float TUBE_POS = TUBE_SPACING + Tube.TUBE_WIDTH;
     private static final int TUBE_COUNT = 4;
@@ -30,8 +43,12 @@ public class PlayState extends State {
     //Score Management
     private Score score;
 
+    //GameOver
+    private GameOver gameOver;
+
     public PlayState(GameStateManager gsx){
         super(gsx);
+        currentState = STATE.PLAY;
         bird = new Bird(50, 500);
         BIRD_INIT_POS = bird.getPosition().x + 80;
         cam.setToOrtho(false, MyGame.WIDTH, MyGame.HEIGHT);
@@ -50,6 +67,13 @@ public class PlayState extends State {
         }
 
         score = new Score(cam.position.x, MyGame.HEIGHT - 150);
+        gameOver = new GameOver(gsx, cam.position.x, MyGame.HEIGHT - 300);
+
+        //
+
+        stage = new Stage();
+        stage.clear();
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -62,36 +86,53 @@ public class PlayState extends State {
 
     @Override
     protected void update(float dt) {
+        switch(currentState) {
+            case GAMEOVER:
+                break;
+            case PAUSE:
+                break;
+            case PLAY :
+                handleInput();
+                bird.update(dt);
+                updateGroundPos();
+                cam.position.x = bird.getPosition().x + CAM_OFFSET;
+                //stage.getViewport().update(stage.getViewport().getScreenX() + CAM_OFFSET, stage.getViewport().getScreenY());
 
-        handleInput();
-        bird.update(dt);
-        updateGroundPos();
-        cam.position.x = bird.getPosition().x + CAM_OFFSET;
+                for(int i = 0; i < tubes.size; i++){
+                    Tube tube = tubes.get(i);
+                    if(cam.position.x - (cam.viewportWidth/2) > tube.getPosBottleTop().x + tube.getBottle_top().getWidth()) {
+                        tube.reposition(tube.getPosBottleTop().x + ((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT));
+                    }
 
-        for(int i = 0; i < tubes.size; i++){
-            Tube tube = tubes.get(i);
-            if(cam.position.x - (cam.viewportWidth/2) > tube.getPosBottleTop().x + tube.getBottle_top().getWidth()) {
-                tube.reposition(tube.getPosBottleTop().x + ((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT));
-            }
+                    //Collision management
+                    if(tube.collides(bird.getBounds())) {
+                        gameOver = new GameOver(gsm, MyGame.WIDTH/2, MyGame.HEIGHT - 300);
+                        System.out.println("position "+cam.position.x);
+                        bird.setCrashed(true);
+                        stage.addActor(gameOver.getButton());
+                        currentState = STATE.GAMEOVER;
+                    }
 
-            //Collision management
-            if(tube.collides(bird.getBounds())) {
-                gsm.set(new PlayState(gsm));
-            }
+                }
+                //Managing ground collision
+                if(ground1Bounds.overlaps(bird.getBounds()) || ground2Bounds.overlaps(bird.getBounds())){
+                    gameOver = new GameOver(gsm, MyGame.WIDTH/2, MyGame.HEIGHT - 300);
+                    System.out.println("position "+cam.position.x);
+                    bird.setCrashed(true);
+                    stage.addActor(gameOver.getButton());
+                    currentState = STATE.GAMEOVER;
+                }
 
+                score.updateScore(bird.getPosition().x , cam.position.x);
+                cam.update();
+                break;
         }
-        //Managing ground collision
-        if(ground1Bounds.overlaps(bird.getBounds()) || ground2Bounds.overlaps(bird.getBounds())){
-            gsm.set(new PlayState(gsm));
-        }
-
-        score.updateScore(bird.getPosition().x , cam.position.x);
-        cam.update();
     }
 
     @Override
     protected void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
+        stage.act();
         sb.begin();
         //drawing background
         sb.draw(background, cam.position.x - (cam.viewportWidth/2), 0);
@@ -107,6 +148,14 @@ public class PlayState extends State {
         sb.draw(ground, groundPos1.x, groundPos1.y);
         sb.draw(ground, groundPos2.x, groundPos2.y);
         score.getFont().draw(sb, score.toString(), score.getFontPositionX(), score.getFontPositionY());
+
+        if(currentState.equals(STATE.GAMEOVER)) {
+
+            gameOver.getFont().draw(sb, gameOver.getFontLayout(), gameOver.getPositionX()- gameOver.getFontLayout().width/2, gameOver.getPositionY());
+            //gameOver.getButton().draw(sb, 1f);
+            stage.draw();
+        }
+
         sb.end();
     }
 
@@ -118,6 +167,7 @@ public class PlayState extends State {
         for(Tube tube : tubes) {
             tube.dispose();
         }
+        stage.dispose();
         System.out.println("Play State disposed");
 
     }
@@ -132,4 +182,41 @@ public class PlayState extends State {
             ground2Bounds.setPosition(groundPos2.x, groundPos2.y);
         }
     }
+
+    public Bird getBird() {
+        return bird;
+    }
+
+    public Texture getGround() {
+        return ground;
+    }
+
+    public Texture getBackground() {
+        return background;
+    }
+
+    public Vector2 getGroundPos1() {
+        return groundPos1;
+    }
+
+    public Vector2 getGroundPos2() {
+        return groundPos2;
+    }
+
+    public Rectangle getGround1Bounds() {
+        return ground1Bounds;
+    }
+
+    public Rectangle getGround2Bounds() {
+        return ground2Bounds;
+    }
+
+    public Score getScore() {
+        return score;
+    }
+
+    public Array<Tube> getTubes() {
+        return tubes;
+    }
+
 }

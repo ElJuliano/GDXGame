@@ -1,5 +1,7 @@
 package com.julien.game.sprites.flappy;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -23,7 +25,19 @@ public class Bird {
 
     //Bird animation
     private BirdAnimation animation;
+
+
     private Texture animationTexture;
+
+    //Crash Song
+    private Sound crashSound;
+
+    private Texture crash;
+
+    private TextureRegion crashTexture;
+
+    private boolean isCrashed = false;
+
 
     public Bird(int x, int y){
         this.position = new Vector3(x, y, 0);
@@ -33,13 +47,25 @@ public class Bird {
         animationTexture = new Texture("birdAnim.png");
         animation = new BirdAnimation(new TextureRegion(animationTexture), 3 ,0.5f );
         birdBounds = new Rectangle(x, y, animationTexture.getWidth()/3, animationTexture.getHeight());
+
+        //Sound settings
+        crashSound = Gdx.audio.newSound(Gdx.files.internal("hit.wav"));
+        crash = new Texture("crash.png");
+        crashTexture = new TextureRegion(crash);
     }
 
     public Vector3 getPosition() {
         return position;
     }
 
+    public void setCrashed(boolean crashed) {
+        isCrashed = crashed;
+    }
+
     public TextureRegion getBirdTexture() {
+        if(isCrashed) {
+            return crashTexture;
+        }
         return animation.getFrame();
     }
 
@@ -68,5 +94,12 @@ public class Bird {
 
     public void dispose() {
         animationTexture.dispose();
+        crashSound.dispose();
+        birdTexture.dispose();
+        crash.dispose();
+    }
+
+    public TextureRegion getCrashTexture() {
+        return crashTexture;
     }
 }
