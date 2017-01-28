@@ -29,6 +29,9 @@ public class Bird {
 
     private Texture animationTexture;
 
+    //Succeed sound
+    private Sound successSound;
+
     //Crash Song
     private Sound crashSound;
 
@@ -47,7 +50,8 @@ public class Bird {
         animationTexture = new Texture("birdAnim.png");
         animation = new BirdAnimation(new TextureRegion(animationTexture), 3 ,0.5f );
         birdBounds = new Rectangle(x, y, animationTexture.getWidth()/3, animationTexture.getHeight());
-
+        //Success sound
+        successSound = Gdx.audio.newSound(Gdx.files.internal("beep.wav"));
         //Sound settings
         crashSound = Gdx.audio.newSound(Gdx.files.internal("hit.wav"));
         crash = new Texture("crash.png");
@@ -92,9 +96,18 @@ public class Bird {
         return birdBounds;
     }
 
+    public void playSuccessSound() {
+        successSound.play();
+    }
+
+    public void playCrashSound() {
+        crashSound.play();
+    }
+
     public void dispose() {
         animationTexture.dispose();
         crashSound.dispose();
+        successSound.dispose();
         birdTexture.dispose();
         crash.dispose();
     }

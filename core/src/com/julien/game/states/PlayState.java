@@ -109,6 +109,7 @@ public class PlayState extends State {
                         gameOver = new GameOver(gsm, MyGame.WIDTH/2, MyGame.HEIGHT - 300);
                         System.out.println("position "+cam.position.x);
                         bird.setCrashed(true);
+                        bird.playCrashSound();
                         stage.addActor(gameOver.getButton());
                         currentState = STATE.GAMEOVER;
                     }
@@ -119,11 +120,12 @@ public class PlayState extends State {
                     gameOver = new GameOver(gsm, MyGame.WIDTH/2, MyGame.HEIGHT - 300);
                     System.out.println("position "+cam.position.x);
                     bird.setCrashed(true);
+                    bird.playCrashSound();
                     stage.addActor(gameOver.getButton());
                     currentState = STATE.GAMEOVER;
                 }
 
-                score.updateScore(bird.getPosition().x , cam.position.x);
+                score.updateScore(bird , cam.position.x);
                 cam.update();
                 break;
         }

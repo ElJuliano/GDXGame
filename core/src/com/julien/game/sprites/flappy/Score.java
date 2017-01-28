@@ -26,13 +26,15 @@ public class Score {
         fontPositionY = scorePosY;//MyGame.HEIGHT - 200;
     }
 
-    public void updateScore(float newBirdPositionX, float newScorePositionX) {
+    public void updateScore(Bird bird, float newScorePositionX) {
         //Score management
-        if (newBirdPositionX > posToIncScore) {
+        if (bird.getPosition().x > posToIncScore) {
             // When the position of the bird is superior to the current tube position then we increment the
             // tube position and the score.
             posToIncScore += PlayState.TUBE_POS;
             score++;
+            // Play the bird sucess sound
+            bird.playSuccessSound();
         }
         // Updating score position
         fontPositionX = newScorePositionX;
